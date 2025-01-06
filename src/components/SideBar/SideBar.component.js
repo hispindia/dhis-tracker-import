@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setClickedOU,
   setFilteredOU,
+  setOUCode,
   setOUList,
   setUserOU,
 } from "../../store/outree/outree.action";
@@ -34,7 +35,14 @@ const SideBar = ({ data }) => {
 
   useEffect(() => {
     if (data) {
-      if (data.ouList) dispatch(setOUList(data.ouList.organisationUnits));
+      if (data.ouList) {
+        dispatch(setOUList(data.ouList.organisationUnits));
+        var ouCode = {};
+        data.ouList.organisationUnits.forEach(ou => {
+          if(ou.code) ouCode[ou.code] = ou.id;
+        })
+        dispatch(setOUCode(ouCode))
+      }
       if (data.me) {
         if (data.me.organisationUnits.length >= 2)
           data.me.organisationUnits = data.me.organisationUnits.sort((a, b) =>

@@ -6,6 +6,7 @@ import { createEvents, createTei, formatDate } from "../utils.func";
 
 const SheetStatus = () => {
   const clickedOU = useSelector((state) => state.outree.clickedOU);
+  const ouCode = useSelector((state) => state.outree.ouCode);
   const programSheet = useSelector((state) => state.main.programSheet);
   const uploadedSheet = useSelector((state) => state.sidebar.uploadedSheet);
 
@@ -36,7 +37,9 @@ const SheetStatus = () => {
 
       for (let data of uploadedSheet) {
         if (data.length) {  
-          const orgUnit = programSheet.orgUnit.index==0 ||  programSheet.orgUnit.index ? data[programSheet.orgUnit.index] : clickedOU.id;
+          var orgUnit = programSheet.orgUnit.index==0 ||  programSheet.orgUnit.index ? data[programSheet.orgUnit.index] : clickedOU.id;
+          if(!clickedOU) orgUnit =  ouCode[orgUnit];
+
           const tei = createTei(orgUnit, programSheet, data);
           const existingEvent = {};
       

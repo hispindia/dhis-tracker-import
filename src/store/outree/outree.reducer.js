@@ -5,7 +5,8 @@ export const OUTREE_ACTION_TYPES = {
   SET_SELECTED_OU: "SET_SELECTED_OU",
   SET_FILTERED_OU: "SET_FILTERED_OU",
   SET_SEARCHED_OU: "SET_SEARCHED_OU",
-  SET_SEARCHED_OU_LIST: "SET_SEARCHED_OU_LIST"
+  SET_SEARCHED_OU_LIST: "SET_SEARCHED_OU_LIST",
+  SET_OUCODE: "SET_OUCODE"
 };
 
 export const INITIAL_STATE = {
@@ -15,6 +16,7 @@ export const INITIAL_STATE = {
   filteredOU: "",
   searchedOU: "",
   searchedOUList: [],
+  ouCode: {}
 };
 
 export const outreeReducer = (state = INITIAL_STATE, action) => {
@@ -32,6 +34,8 @@ export const outreeReducer = (state = INITIAL_STATE, action) => {
       return { ...state, searchedOU: payload };
     case OUTREE_ACTION_TYPES.SET_SEARCHED_OU_LIST:
       return { ...state, searchedOUList: payload };
+    case OUTREE_ACTION_TYPES.SET_OUCODE:
+      return { ...state, ouCode: payload };
     default:
       return state;
   }
