@@ -28,3 +28,8 @@ export const setSearchedOUList = (ou) => ({
   type: OUTREE_ACTION_TYPES.SET_SEARCHED_OU_LIST,
   payload: ou,
 });
+export const setCodeOU = (ou) => ({
+  type: OUTREE_ACTION_TYPES.SET_CODE_OU,
+  payload: ou,
+});
+

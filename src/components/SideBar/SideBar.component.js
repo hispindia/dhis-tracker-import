@@ -9,6 +9,7 @@ import {
   setClickedOU,
   setFilteredOU,
   setOUList,
+  setCodeOU,
   setUserOU,
 } from "../../store/outree/outree.action";
 import {
@@ -34,7 +35,12 @@ const SideBar = ({ data }) => {
 
   useEffect(() => {
     if (data) {
-      if (data.ouList) dispatch(setOUList(data.ouList.organisationUnits));
+      if (data.ouList) {
+        dispatch(setOUList(data.ouList.organisationUnits));
+        var ouCode = {};
+        data.ouList.organisationUnits.forEach(ou => ouCode[ou.code] = ou.id);
+        dispatch(setCodeOU(ouCode));
+      }
       if (data.me) {
         if (data.me.organisationUnits.length >= 2)
           data.me.organisationUnits = data.me.organisationUnits.sort((a, b) =>

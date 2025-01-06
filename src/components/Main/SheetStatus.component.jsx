@@ -5,6 +5,7 @@ import { ApiService } from "../../services/api";
 import { createEvents, createTei, formatDate } from "../utils.func";
 
 const SheetStatus = () => {
+  const codeOU = useSelector((state) => state.outree.codeOU);
   const clickedOU = useSelector((state) => state.outree.clickedOU);
   const programSheet = useSelector((state) => state.main.programSheet);
   const uploadedSheet = useSelector((state) => state.sidebar.uploadedSheet);
@@ -36,10 +37,12 @@ const SheetStatus = () => {
 
       for (let data of uploadedSheet) {
         if (data.length) {  
-          const orgUnit = programSheet.orgUnit.index==0 ||  programSheet.orgUnit.index ? data[programSheet.orgUnit.index] : clickedOU.id;
+
+          var orgUnit = programSheet.orgUnit.index==0 ||  programSheet.orgUnit.index ? data[programSheet.orgUnit.index] : clickedOU.id;
+          if(codeOU[orgUnit]) orgUnit = codeOU[orgUnit];
           const tei = createTei(orgUnit, programSheet, data);
+          try{      
           const existingEvent = {};
-      
           const teiStatus = [];
 
           let resTei;
@@ -54,15 +57,16 @@ const SheetStatus = () => {
 
           if (resExistingTei.trackedEntityInstances.length) {
             let trackedEntityInstances = resExistingTei.trackedEntityInstances[0];
-            trackedEntityInstances.enrollments.forEach(enrollment =>
-                enrollment.events.forEach((ev) => {
-                  if (ev.eventDate) {
-                    let eventDate = ev.eventDate.split("T")[0];
-                    existingEvent[`${ev.programStage}-date-${eventDate}`] = eventDate;
-                    existingEvent[`${ev.programStage}-ps-${eventDate}`] = ev.event;
-                  }
-                })
-            );
+            trackedEntityInstances.enrollments.forEach(enrollment =>{
+              if(enrollment.events.length)  existingEvent[enrollment.events[0].programStage] = enrollment.events[0].event;
+                // enrollment.events.forEach((ev) => {
+                  // if (ev.eventDate) {
+                  //   let eventDate = ev.eventDate.split("T")[0];
+                  //   existingEvent[`${ev.programStage}-date-${eventDate}`] = eventDate;
+                  //   existingEvent[`${ev.programStage}-ps-${eventDate}`] = ev.event;
+                  // }
+                // })
+            });
 
             resTei = await ApiService.trackedEntityInstance.put(
               trackedEntityInstances.trackedEntityInstance,
@@ -118,16 +122,9 @@ const SheetStatus = () => {
           
          const events = createEvents(resTei.reference,orgUnit, programSheet, data);
           for (let event of events) {
-            if (
-              new Date(event.eventDate).toString() ==
-              new Date(existingEvent[`${event.programStage}-date-${event.eventDate}`]).toString()
-            ) {
+            if (existingEvent[event.programStage]) {
               resEvents = await ApiService.events.put(
-                existingEvent[
-                  `${event.programStage}-ps-${
-                    existingEvent[`${event.programStage}-date-${event.eventDate}`]
-                  }`
-                ],
+                existingEvent[event.programStage],
                 event
               );
               teiStatus.push([
@@ -160,6 +157,20 @@ const SheetStatus = () => {
           else setSuccess((success) => success + 1);
           setPending((pending) => pending - 1);
           setTeiList([...arrTei]);
+            
+          }
+          catch(err) {
+            setFailed((failed) => failed + 1);
+            arrTei.push([[
+              tei.primaryAttr.value,
+              "Error",
+              "Error",
+              "Error",
+              err.message,
+              "Error",
+            ]]);
+            setTeiList([...arrTei]);
+          }
         }
       }
     };

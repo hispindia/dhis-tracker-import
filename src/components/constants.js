@@ -1,4 +1,9 @@
-export const primaryAttribute = "nGaMxWEamaL";
+export const primaryAttribute = "VTCQOcgxnbu";
+export const enrollmentDateIndex = 12;
+export const eventtDateIndex = 12;
+
+//event to accept Single or Multiple.
+export const eventAccepted = "single"
 
 export const InitialQuery = {
   me: {

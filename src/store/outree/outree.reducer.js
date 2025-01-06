@@ -1,5 +1,6 @@
 export const OUTREE_ACTION_TYPES = {
   SET_OU_LIST: "SET_OU_LIST",
+  SET_CODE_OU: 'SET_CODE_OU',
   SET_USER_OU: "SET_USER_OU",
   SET_CLICKED_OU: "SET_CLICKED_OU",
   SET_SELECTED_OU: "SET_SELECTED_OU",
@@ -10,6 +11,7 @@ export const OUTREE_ACTION_TYPES = {
 
 export const INITIAL_STATE = {
   userOU: null,
+  codeOU:null,
   clickedOU: null,
   ouList: null,
   filteredOU: "",
@@ -22,6 +24,8 @@ export const outreeReducer = (state = INITIAL_STATE, action) => {
   switch (type) {
     case OUTREE_ACTION_TYPES.SET_USER_OU:
       return { ...state, userOU: payload };
+    case OUTREE_ACTION_TYPES.SET_CODE_OU:
+      return { ...state, codeOU: payload };
     case OUTREE_ACTION_TYPES.SET_CLICKED_OU:
       return { ...state, clickedOU: payload };
     case OUTREE_ACTION_TYPES.SET_OU_LIST:

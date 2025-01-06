@@ -3,6 +3,7 @@ import "./styles.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setIdsIndex } from "../../store/sidebar/sidebar.action";
 import { setProgramSheet } from "../../store/main/main.action";
+import { enrollmentDateIndex, eventtDateIndex } from "../constants";
 
 const Sheet = () => {
   const dispatch = useDispatch();
@@ -15,14 +16,14 @@ const Sheet = () => {
       const modifiedProgram = programSheet;
 
       modifiedProgram.orgUnit.index = idsIndex['orgUnit']==0 ||  idsIndex['orgUnit'] ? idsIndex['orgUnit'] : '';
-      modifiedProgram.enrollmentDate.index = idsIndex['enrollmentDate'] ? idsIndex['enrollmentDate'] : '';
+      modifiedProgram.enrollmentDate.index = idsIndex['enrollmentDate'] ? idsIndex['enrollmentDate'] : enrollmentDateIndex;
 
       modifiedProgram.attributes.forEach((attr) => {
         attr.index = idsIndex[attr.attribute] ? idsIndex[attr.attribute] : "";
       });
       
       modifiedProgram["programStages"].forEach(ps => {
-        ps.eventDate.index = idsIndex[ps.id] ? idsIndex[ps.id]: '';
+        ps.eventDate.index = idsIndex[ps.id] ? idsIndex[ps.id]: eventtDateIndex;
         ps.dataElements.forEach(de => {
           de["index"] = idsIndex[de.dataElement] ? idsIndex[de.dataElement] : "";
         })
