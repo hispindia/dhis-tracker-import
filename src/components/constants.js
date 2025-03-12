@@ -1,4 +1,4 @@
-export const primaryAttribute = "nGaMxWEamaL";
+export const primaryAttribute = "IKOSsYJJZis";
 
 export const InitialQuery = {
   me: {

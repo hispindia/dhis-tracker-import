@@ -18,13 +18,13 @@ const Sheet = () => {
       modifiedProgram.enrollmentDate.index = idsIndex['enrollmentDate'] ? idsIndex['enrollmentDate'] : '';
 
       modifiedProgram.attributes.forEach((attr) => {
-        attr.index = idsIndex[attr.attribute] ? idsIndex[attr.attribute] : "";
+        attr.index = (idsIndex[attr.attribute] || idsIndex[attr.attribute]===0) ? idsIndex[attr.attribute] : "";
       });
       
       modifiedProgram["programStages"].forEach(ps => {
-        ps.eventDate.index = idsIndex[ps.id] ? idsIndex[ps.id]: '';
+        ps.eventDate.index = (idsIndex[ps.id] || idsIndex[ps.id] === 0) ? idsIndex[ps.id]: '';
         ps.dataElements.forEach(de => {
-          de["index"] = idsIndex[de.dataElement] ? idsIndex[de.dataElement] : "";
+          de["index"] = (idsIndex[de.dataElement] || idsIndex[de.dataElement]===0) ? idsIndex[de.dataElement] : "";
         })
       })
       dispatch(setProgramSheet(modifiedProgram));

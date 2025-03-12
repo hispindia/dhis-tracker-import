@@ -102,7 +102,7 @@ export const createTei = (orgUnit, program, data) => {
   };
 
   program.attributes.forEach((attr) => {
-    if (attr.index && (data[attr.index] || data[attr.index]===false)) {
+    if ((attr.index || attr.index===0) && (data[attr.index] || data[attr.index]===false)) {
       if (attr.attribute == primaryAttr.id)
         primaryAttr.value = data[attr.index];
 
@@ -134,7 +134,7 @@ export const createTei = (orgUnit, program, data) => {
 export const createEvents = (teiId, orgUnit, program, data) => {
   const events = [];
   program.programStages.forEach((ps) => {
-    if (data[ps.eventDate.index]) {
+    if (data[ps.eventDate.index] || data[ps.eventDate.index]===0) {
       const eventDate = formatDate(data[ps.eventDate.index], "YY-MM-DD");
       const event = {
         trackedEntityInstance: teiId,
